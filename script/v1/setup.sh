@@ -20,19 +20,21 @@ clear
 # Script Access
 cho -e "${gr}CHECKING SCRIPT ACCESS${NC}"
 sleep 2
-
+mkdir /etc/pass
 clear
 read -rp "    MASUKKAN PASSWORD ANDA: " -e pass
 IZIN=$(curl https://raw.githubusercontent.com/JinGGoVPN/DATA/main/IP/accsess | grep $pass | awk '{print $2}')
 if [ $pass = $IZIN ]; then
     echo -e ""
     echo -e "${gr}ACCESS GRANTED...${NC}"
+    echo "$pass" >> /etc/pass/accsess
     sleep 2
 else
 	echo -e ""
     echo -e "${red}ACCESS DENIED...PM TELEGRAM OWNER${NC}"
     sleep 2
     rm -f setup.sh
+    rm -rf /etc/pass
     exit 1
 fi
 clear

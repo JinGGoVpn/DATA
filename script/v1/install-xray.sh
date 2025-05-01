@@ -596,7 +596,3 @@ chmod +x delexp
 cd
 rm -f install-xray.sh
 rm -f /root/domain
-clear
-echo -e " ${RED}XRAY INSTALL DONE ${NC}"
-sleep 2
-clear

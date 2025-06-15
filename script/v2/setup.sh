@@ -121,7 +121,7 @@ echo -e "============================================="
 echo -e " ${green} INSTALLING SSH WS  ${NC}"
 echo -e "============================================="
 sleep 2
-wget ${websc}/script/sshws/websocket.sh && chmod +x websocket.sh && ./websocket.sh
+wget ${websc}/script/sshws/sshws.sh && chmod +x sshws.sh && ./sshws.sh
 sleep 2
 clear
 
@@ -131,7 +131,7 @@ echo -e "============================================="
 echo -e " ${green} INSTALLING XRAY${NC} "
 echo -e "============================================="
 sleep 2
-wget ${websc}/script/v1/install-xray.sh && chmod +x install-xray.sh && ./install-xray.sh
+wget ${websc}/script/v2/install-xray.sh && chmod +x install-xray.sh && ./install-xray.sh
 sleep 2
 clear
 

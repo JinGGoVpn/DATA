@@ -29,14 +29,14 @@ else
 echo -e " SQUID              : SQUID  Service is "$red"OFF"$NC""    
 fi 
 
-status="$(systemctl show openvpn--no-page)"                                 
+status="$(systemctl show openvpn.service --no-page)"                                      
 status_text=$(echo "${status}" | grep 'ActiveState=' | cut -f2 -d=)                     
 if [ "${status_text}" == "active" ]                                                     
 then                                                                                    
-echo -e " OPENVPN            : OPENVPN Service is "$green"ON"$NC""              
+echo -e " OPENVPN            : OPENVPN Service is "$green"ON"$NC""                
 else                                                                                    
-echo -e " OPENVPN            : OPENVPN  Service is "$red"OFF"$NC""    
-fi 
+echo -e " OPENVPN            : OPENVPN Service is "$red"OFF"$NC""      
+fi
 
 status="$(systemctl show xray --no-page)"                                 
 status_text=$(echo "${status}" | grep 'ActiveState=' | cut -f2 -d=)                     
@@ -82,16 +82,6 @@ echo -e " SSH WS HTTP        : SSH WS HTTP  Service is "$green"ON"$NC""
 else                                                                                    
 echo -e " SSH WS HTTP        : SSH WS HTTP  Service is "$red"OFF"$NC""    
 fi 
-
-status="$(systemctl show ws-https.service --no-page)"                                 
-status_text=$(echo "${status}" | grep 'ActiveState=' | cut -f2 -d=)                     
-if [ "${status_text}" == "active" ]                                                     
-then                                                                                    
-echo -e " SSH WS HTTPS       : SSH WS HTTPS  Service is "$green"ON"$NC""              
-else                                                                                    
-echo -e " SSH WS HTTPS       : SSH WS HTTPS  Service is "$red"OFF"$NC""    
-fi 
-
 
 
 echo ""

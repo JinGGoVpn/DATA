@@ -21,7 +21,6 @@ systemctl restart xray@none
 systemctl restart xray@vlessws
 systemctl restart xray@vlessgrpc
 systemctl ws-http.service
-systemctl ws-https.service
 /etc/init.d/ssh restart
 /etc/init.d/dropbear restart
 /etc/init.d/stunnel4 restart

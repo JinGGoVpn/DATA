@@ -234,9 +234,6 @@ connect = 127.0.0.1:22
 accept = 442
 connect = 127.0.0.1:1194
 
-[wss-stunnel]
-accept = 2096
-connect = 127.0.0.1:2092
 
 END
 
@@ -307,13 +304,13 @@ wget -O member "${websc}/script/sshovpn/member.sh"
 # // menu system
 wget -O add-host "${websc}/script/menu/add-host.sh"
 wget -O speedtest "${websc}/script/menu/speedtest_cli.py"
-wget -O restart-service "${websc}/script/v2/restart-service.sh"
+wget -O restart-service "${websc}/script/v1/restart-service.sh"
 wget -O ram "${websc}/script/menu/ram.sh"
 wget -O info "${websc}/script/menu/info.sh"
 wget -O nf "${websc}/script/menu/nf.sh"
 wget -O mdns "${websc}/script/menu/mdns.sh"
-wget -O status "${websc}/script/v2/status.sh"
-wget -O update "${websc}/script/v2/update.sh"
+wget -O status "${websc}/script/v1/status.sh"
+wget -O update "${websc}/script/v1/update.sh"
 
 
 # menu
@@ -378,7 +375,7 @@ apt autoremove -y
 
 
 /etc/init.d/nginx restart
-#/etc/init.d/openvpn restart
+/etc/init.d/openvpn restart
 /etc/init.d/cron restart
 /etc/init.d/ssh restart
 /etc/init.d/dropbear restart

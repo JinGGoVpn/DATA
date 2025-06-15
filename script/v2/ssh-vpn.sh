@@ -258,7 +258,7 @@ gem install lolcat
 apt -y install figlet
 
 # // OpenVPN
-wget ${websc}/script/sshovpn/vpn.sh && chmod +x vpn.sh && ./vpn.sh
+#wget ${websc}/script/sshovpn/vpn.sh && chmod +x vpn.sh && ./vpn.sh
 
 # // install fail2ban
 apt install -y dnsutils tcpdump dsniff grepcidr
@@ -378,7 +378,7 @@ apt autoremove -y
 
 
 /etc/init.d/nginx restart
-/etc/init.d/openvpn restart
+#/etc/init.d/openvpn restart
 /etc/init.d/cron restart
 /etc/init.d/ssh restart
 /etc/init.d/dropbear restart

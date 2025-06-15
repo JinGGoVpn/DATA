@@ -307,13 +307,13 @@ wget -O member "${websc}/script/sshovpn/member.sh"
 # // menu system
 wget -O add-host "${websc}/script/menu/add-host.sh"
 wget -O speedtest "${websc}/script/menu/speedtest_cli.py"
-wget -O restart-service "${websc}/script/v1/restart-service.sh"
+wget -O restart-service "${websc}/script/v2/restart-service.sh"
 wget -O ram "${websc}/script/menu/ram.sh"
 wget -O info "${websc}/script/menu/info.sh"
 wget -O nf "${websc}/script/menu/nf.sh"
 wget -O mdns "${websc}/script/menu/mdns.sh"
-wget -O status "${websc}/script/v1/status.sh"
-wget -O update "${websc}/script/v1/update.sh"
+wget -O status "${websc}/script/v2/status.sh"
+wget -O update "${websc}/script/v2/update.sh"
 
 
 # menu

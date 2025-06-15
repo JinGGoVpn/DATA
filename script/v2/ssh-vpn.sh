@@ -258,7 +258,7 @@ gem install lolcat
 apt -y install figlet
 
 # // OpenVPN
-#wget ${websc}/script/sshovpn/vpn.sh && chmod +x vpn.sh && ./vpn.sh
+wget ${websc}/script/sshovpn/vpn.sh && chmod +x vpn.sh && ./vpn.sh
 
 # // install fail2ban
 apt install -y dnsutils tcpdump dsniff grepcidr

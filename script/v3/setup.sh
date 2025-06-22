@@ -47,7 +47,7 @@ clear
 
 #Welcome Note
 echo -e "============================================="
-echo -e " ${green} WELCOME TO PREMIUM SCRIPT V2${NC}"
+echo -e " ${green} WELCOME TO PREMIUM SCRIPT V3${NC}"
 echo -e "============================================="
 sleep 2
 
@@ -112,7 +112,7 @@ echo -e "============================================="
 echo -e " ${green} INSTALLING SSH && OVPN ${NC}"
 echo -e "============================================="
 sleep 2
-wget ${websc}/script/v2/ssh-vpn.sh && chmod +x ssh-vpn.sh && ./ssh-vpn.sh
+wget ${websc}/script/v3/ssh-vpn.sh && chmod +x ssh-vpn.sh && ./ssh-vpn.sh
 sleep 2
 clear
 

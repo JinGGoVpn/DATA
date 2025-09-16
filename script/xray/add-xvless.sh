@@ -70,11 +70,11 @@ celcomboost1="vless://${uuid}@www.speedtest.net:$none?path=/xvlessntls&encryptio
 celcomboost2="vless://${uuid}@${MYIP}:$none?path=/xvlessntls&encryption=none&type=ws&host=opensignal.com#${user}-celcomboost2"
 
 umobile="vless://${uuid}@www.pubgmobile.com.${domain}:$tls?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct&sni=www.pubgmobile.com#$user-umobile-funz"
-umobile1="vless://${uuid}$MYIP:$none?path=/xvlessntls&encryption=none&type=ws&host=www.pubgmobile.com#${user}-umobile-funz-ntls"
+umobile1="vless://${uuid}@$MYIP:$none?path=/xvlessntls&encryption=none&type=ws&host=www.pubgmobile.com#${user}-umobile-funz-ntls"
 umobile2="vless://${uuid}@www.pubgmobile.com.${domain}:$tls?path=/xvless&security=tls&encryption=none&type=ws&sni=www.pubgmobile.com#${user}-umobile-funz-tls"
 umobile3="vless://${uuid}@104.18.8.53:$none?path=/xvlessntls&encryption=none&type=ws&host=$dom#${user}-umobile-new-ntls"
 
-yes="vless://${uuid}@104.17.113.188:$none?path=/vlessntls&encryption=none&type=ws&host=$dom#${user}-yes-router"
+yes="vless://${uuid}@104.17.147.22:$none?path=/vlessntls&encryption=none&type=ws&host=$dom#${user}-yes-router"
 #yes1="vless://${uuid}@eurohealthobservatory.who.int:$none?path=/vlessntlst&encryption=none&type=ws&host=$dom#${user}-yes-hp"
 
 yoodopubg="vless://${uuid}@m.pubgmobile.com.${domain}:$tls?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct&sni=m.pubgmobile.com#$user-yodoopubg"
@@ -86,8 +86,9 @@ yoodoml="vless://${uuid}@m.mobilelegends.com.${domain}:$tls?security=xtls&encryp
 yoodoml1="vless://${uuid}@${MYIP}:$none?path=$path/xvlessntls&encryption=none&type=ws&host=m.mobilelegends.com#${user}-yodooml1"
 
 #unifi="vless://${uuid}@map.unifi.com.my.${domain}:$tls?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct&sni=map.unifi.com.my#$user-unifi"
-unifi1="vless://${uuid}@covidnow.pages.dev:$none?path=ws://$domain&encryption=none&type=ws&host=opensignal.com#${user}-unifi1"
-unifi2="vless://${uuid}@162.159.134.61:$none?path=ws://$domain&encryption=none&type=ws&host=opensignal.com#${user}-unifi-unifi2"
+#unifi1="vless://${uuid}@covidnow.pages.dev:$none?path=ws://$domain&encryption=none&type=ws&host=opensignal.com#${user}-unifi-wow"
+unifi1="vless://${uuid}@172.66.40.170:$none?path=www.speedtest.net&encryption=none&type=ws&host=$domain#${user}-unifi-wow"
+unifi2="vless://${uuid}@104.17.10.12:$none?path=www.speedtest.net&encryption=none&type=ws&host=$domain#${user}-unifi-bebas"
 
 systemctl restart xray
 systemctl restart xray@none

@@ -121,18 +121,7 @@ echo -e "============================================="
 echo -e " ${green} INSTALLING SSH WS  ${NC}"
 echo -e "============================================="
 sleep 2
-DEBIAN_VERSION=$(grep VERSION_ID /etc/os-release | cut -d '"' -f2)
-
-if [[ "$DEBIAN_VERSION" == "12" ]]; then
-  GITHUB_FILE_URL="${websc}/script/sshws/deb12/websocket.sh"
-elif [[ "$DEBIAN_VERSION" == "11" || "$DEBIAN_VERSION" == "10" ]]; then
-  GITHUB_FILE_URL="${websc}/script/sshws/websocket.sh"
-else
-  echo "Unsupported Debian version: $DEBIAN_VERSION"
-  exit 1
-fi
-
-wget $GITHUB_FILE_URL && chmod +x websocket.sh && ./websocket.sh
+wget ${websc}/script/sshws/websocket.sh && chmod +x websocket.sh && ./websocket.sh
 sleep 2
 clear
 

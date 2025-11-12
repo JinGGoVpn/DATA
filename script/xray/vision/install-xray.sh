@@ -81,8 +81,8 @@ cat> /usr/local/etc/xray/config.json << END
             },
             "streamSettings": {
                 "network": "tcp",
-                "security": "xtls",
-                "xtlsSettings": {
+                "security": "tls",
+                "tlsSettings": {
                     "alpn": [
                         "h2",
                         "http/1.1"

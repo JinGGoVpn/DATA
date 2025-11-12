@@ -557,7 +557,7 @@ systemctl restart xray@none
 
 
 cd /usr/local/bin
-wget -O add-xvless "${websc}/script/xray/add-xvless.sh"
+wget -O add-xvless "${websc}/script/xray/vision/add-xvless.sh"
 wget -O del-xvless "${websc}/script/xray/del-xvless.sh"
 wget -O renew-xvless "${websc}/script/xray/renew-xvless.sh"
 wget -O cek-xvless "${websc}/script/xray/cek-xvless.sh"

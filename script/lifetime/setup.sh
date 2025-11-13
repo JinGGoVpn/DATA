@@ -107,21 +107,21 @@ sysctl -p
 clear
 
 websc=https://raw.githubusercontent.com/JinGGoVPN/DATA/main
-#install ssh ovpn
+#install ssh 
 echo -e "============================================="
-echo -e " ${green} INSTALLING SSH && OVPN ${NC}"
+echo -e " ${green} INSTALLING SSH ${NC}"
 echo -e "============================================="
 sleep 2
 wget ${websc}/script/lifetime/ssh-vpn.sh && chmod +x ssh-vpn.sh && ./ssh-vpn.sh
 sleep 2
 clear
 
-#install ssh ovpn
+#install ssh ws
 echo -e "============================================="
 echo -e " ${green} INSTALLING SSH WS  ${NC}"
 echo -e "============================================="
 sleep 2
-wget ${websc}/script/sshws/websocket.sh && chmod +x websocket.sh && ./websocket.sh
+wget ${websc}/script/sshws/deb12/websocket.sh && chmod +x websocket.sh && ./websocket.sh
 sleep 2
 clear
 

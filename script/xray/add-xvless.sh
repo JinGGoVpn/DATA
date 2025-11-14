@@ -73,7 +73,7 @@ umobile="vless://${uuid}@www.pubgmobile.com.${domain}:$tls?security=tls&encrypti
 umobile1="vless://${uuid}@$MYIP:$none?path=/xvlessntls&encryption=none&type=ws&host=www.pubgmobile.com#${user}-umobile-funz-ntls"
 umobile2="vless://${uuid}@www.pubgmobile.com.${domain}:$tls?path=/xvless&security=tls&encryption=none&type=ws&sni=www.pubgmobile.com#${user}-umobile-funz-tls"
 #umobile3="vless://${uuid}@104.18.8.53:$none?path=/xvlessntls&encryption=none&type=ws&host=$dom#${user}-umobile-new-ntls"
-umopayload="vless://${uuid}@:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY / HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=ws&host=strx-payload://u.com.my/xvlessntls#${user}-umopayload"
+umopayload="vless://${uuid}@cdn.opensginal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY / HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=ws&host=strx-payload://u.com.my/xvlessntls#${user}-umopayload"
 
 yes="vless://${uuid}@104.17.147.22:$none?path=/vlessntls&encryption=none&type=ws&host=$dom#${user}-yes-router"
 #yes1="vless://${uuid}@eurohealthobservatory.who.int:$none?path=/vlessntlst&encryption=none&type=ws&host=$dom#${user}-yes-hp"

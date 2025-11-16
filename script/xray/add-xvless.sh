@@ -39,15 +39,18 @@ sed -i '/#xray-vless-tls$/a\### '"$user $exp"'\
 sed -i '/#xray-vless-grpc$/a\### '"$user $exp"'\
 },{"id": "'""$uuid""'","email": "'""$user""'"' /usr/local/etc/xray/vlessgrpc.json
 sed -i '/#xray-vless-xtls$/a\### '"$user $exp"'\
-},{"id": "'""$uuid""'","flow": "xtls-rprx-direct","email": "'""$user""'"' /usr/local/etc/xray/config.json
+},{"id": "'""$uuid""'","flow": "xtls-rprx-vision","email": "'""$user""'"' /usr/local/etc/xray/config.json
 sed -i '/#xray-vless-nontls$/a\### '"$user $exp"'\
 },{"id": "'""$uuid""'","email": "'""$user""'"' /usr/local/etc/xray/none.json
+sed -i '/#xray-vless-hup$/a\### '"$user $exp"'\
+},{"id": "'""$uuid""'","email": "'""$user""'"' /usr/local/etc/xray/vlesshup.json
 
 echo -e "### $user $exp" >> /usr/local/etc/xray/vless.txt
 
 vlesslink1="vless://${uuid}@${dom}:$tls?path=$path/xvless&security=tls&encryption=none&type=ws&sni=$sni#${user}"
 vlesslink2="vless://${uuid}@${dom}:$none?path=$path/xvlessntls&encryption=none&type=ws&host=$sni#${user}"
-vless_direct="vless://${uuid}@${dom}:$tls?security=tls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct&sni=$sni#$user"
+vlesslink3="vless://${uuid}@${dom}:$none?path=$path/xvless-hup&encryption=none&type=httpupgrade&host=$sni#${user}"
+vless_vision="vless://${uuid}@${dom}:$tls?security=tls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-vision&sni=$sni#$user"
 vlessgrpc="vless://${uuid}@${dom}:$tls?mode=gun&security=tls&encryption=none&type=grpc&serviceName=vlgrpc&sni=$sni#$user"
 
 digisosial="vless://${uuid}@m.twitter.com.${domain}:$none?path=/xvlessntls&encryption=none&type=ws&host=m.twitter.com#${user}-digisosial"
@@ -57,7 +60,7 @@ digiboost="vless://${uuid}@opensignal.com.$dom:$none?path=/xvlessntls&encryption
 
 maxisfrez="vless://${uuid}@cdn.opensignal.com:$none?path=/xvlessntls&encryption=none&type=ws&host=cdn.opensignal.com.$dom#${user}-maxistv-frez"
 #maxistv1="vless://${uuid}@help.viu.com:$none?path=help.viu.com&encryption=none&type=ws&host=$dom#${user}-maxistv-hp"
-#maxishunt1="vless://${uuid}@api-faceid.maxis.com.my.${domain}:$tls?security=xtls&encryption=none&headerType=none&type=tcp&flow=tls-rprx-direct&sni=www.mosti.gov.my#$user-maxisnew"
+#maxishunt1="vless://${uuid}@api-faceid.maxis.com.my.${domain}:$tls?security=xtls&encryption=none&headerType=none&type=tcp&flow=tls-rprx-vision&sni=www.mosti.gov.my#$user-maxisnew"
 #maxishunt2="vless://${uuid}@api-faceid.maxis.com.my.${domain}:$tls?securuty=tls&path=/xvless&encryption=none&type=ws&host=www.mosti.gov.my&sni=www.mosti.gov.my#${user}-maxisnew1"
 #maxishunt3="vless://${uuid}@api-faceid.maxis.com.my.${domain}:$none?path=/xvlessntls&encryption=none&type=ws&host=www.mosti.gov.my#${user}-maxisnew2"
 maxispayload="vless://${uuid}@siteintercept.qualtrics.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY / HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=ws&host=strx-payload://mgm.maxis.com.my/xvlessntls#${user}-maxispayload"
@@ -69,24 +72,25 @@ celcomboost="vless://${uuid}@104.17.147.22:$none?path=/xvlessntls&encryption=non
 celcomboost1="vless://${uuid}@www.speedtest.net:$none?path=/xvlessntls&encryption=none&type=ws&host=$dom#${user}-celcomboost-hp"
 celcomboost2="vless://${uuid}@${MYIP}:$none?path=/xvlessntls&encryption=none&type=ws&host=opensignal.com#${user}-celcomboost2"
 
-umobile="vless://${uuid}@www.pubgmobile.com.${domain}:$tls?security=tls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct&sni=www.pubgmobile.com#$user-umobile-funz"
+umobile="vless://${uuid}@www.pubgmobile.com.${domain}:$tls?security=tls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-vision&sni=www.pubgmobile.com#$user-umobile-funz"
 umobile1="vless://${uuid}@$MYIP:$none?path=/xvlessntls&encryption=none&type=ws&host=www.pubgmobile.com#${user}-umobile-funz-ntls"
 umobile2="vless://${uuid}@www.pubgmobile.com.${domain}:$tls?path=/xvless&security=tls&encryption=none&type=ws&sni=www.pubgmobile.com#${user}-umobile-funz-tls"
 #umobile3="vless://${uuid}@104.18.8.53:$none?path=/xvlessntls&encryption=none&type=ws&host=$dom#${user}-umobile-new-ntls"
-umopayload="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY / HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&security=none&encryption=none&host=strx-payload://u.com.my/xvlessntls&type=ws#${user}-umopayload"
+umopayload="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY / HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=ws&host=strx-payload://u.com.my/xvlessntls#${user}-umopayload"
+
 
 yes="vless://${uuid}@104.17.147.22:$none?path=/vlessntls&encryption=none&type=ws&host=$dom#${user}-yes-router"
 #yes1="vless://${uuid}@eurohealthobservatory.who.int:$none?path=/vlessntlst&encryption=none&type=ws&host=$dom#${user}-yes-hp"
 
-yoodopubg="vless://${uuid}@m.pubgmobile.com.${domain}:$tls?security=tls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct&sni=m.pubgmobile.com#$user-yodoopubg"
+yoodopubg="vless://${uuid}@m.pubgmobile.com.${domain}:$tls?security=tls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-vision&sni=m.pubgmobile.com#$user-yodoopubg"
 yoodopubg1="vless://${uuid}@${MYIP}:$none?path=$path/xvlessntls&encryption=none&type=ws&host=m.pubgmobile.com#${user}-yodoopubg1"
-yoodopokemon="vless://${uuid}@community.pokemon.com.${domain}:$tls?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct&sni=community.pokemon.com#$user-yodoopokemon"
+yoodopokemon="vless://${uuid}@community.pokemon.com.${domain}:$tls?security=xtls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-vision&sni=community.pokemon.com#$user-yodoopokemon"
 yoodopokemon1="vless://${uuid}@${MYIP}:$none?path=$path/xvlessntls&encryption=none&type=ws&host=community.pokemon.com#${user}-yodoopokemon1"
 
-yoodoml="vless://${uuid}@m.mobilelegends.com.${domain}:$tls?security=tls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct&sni=m.mobilelegends.com#$user-yodooml"
+yoodoml="vless://${uuid}@m.mobilelegends.com.${domain}:$tls?security=tls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-vision&sni=m.mobilelegends.com#$user-yodooml"
 yoodoml1="vless://${uuid}@${MYIP}:$none?path=$path/xvlessntls&encryption=none&type=ws&host=m.mobilelegends.com#${user}-yodooml1"
 
-#unifi="vless://${uuid}@map.unifi.com.my.${domain}:$tls?security=tls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-direct&sni=map.unifi.com.my#$user-unifi"
+#unifi="vless://${uuid}@map.unifi.com.my.${domain}:$tls?security=tls&encryption=none&headerType=none&type=tcp&flow=xtls-rprx-vision&sni=map.unifi.com.my#$user-unifi"
 #unifi1="vless://${uuid}@covidnow.pages.dev:$none?path=ws://$domain&encryption=none&type=ws&host=opensignal.com#${user}-unifi-wow"
 unifi1="vless://${uuid}@172.66.40.170:$none?path=www.speedtest.net&encryption=none&type=ws&host=$domain#${user}-unifi-wow"
 unifi2="vless://${uuid}@104.17.10.12:$none?path=www.speedtest.net&encryption=none&type=ws&host=$domain#${user}-unifi-bebas"
@@ -202,15 +206,15 @@ echo -e ""
 echo -e ""
 echo -e "================================="
 echo -e "${cy}LINK VLESS UMOBILE :${NC} "
-#echo -e ""
-#echo -e ""
-#echo -e "   \`${umobile}\`"
-#echo -e ""
-#echo -e ""
-#echo -e "   \`${umobile1}\`"
-#echo -e ""
-#echo -e ""
-#echo -e "   \`${umobile2}\`"
+echo -e ""
+echo -e ""
+echo -e "   \`${umobile}\`"
+echo -e ""
+echo -e ""
+echo -e "   \`${umobile1}\`"
+echo -e ""
+echo -e ""
+echo -e "   \`${umobile2}\`"
 echo -e ""
 echo -e ""
 echo -e "   \`${umopayload}\`"

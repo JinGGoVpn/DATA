@@ -202,6 +202,7 @@ ClientAliveCountMax 2
 MaxAuthTries 3
 MaxSessions 10
 MaxStartups 10:30:100
+Subsystem       sftp    /usr/lib/openssh/sftp-server
 
 # Security & Performance
 UsePAM yes

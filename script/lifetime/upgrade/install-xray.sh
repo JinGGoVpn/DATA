@@ -45,67 +45,86 @@ touch /usr/local/etc/xray/warp-domain.txt
 
 uuid=$(cat /proc/sys/kernel/random/uuid)
 uuid2=$(cat /proc/sys/kernel/random/uuid)
+
 cat> /usr/local/etc/xray/config.json << END
 {
-  "log": {
-    "access": "/var/log/xray/access.log",
-    "error": "/var/log/xray/error.log",
-    "loglevel": "info"
-       },
     "inbounds": [
-        {
-            "port": 443,
-            "protocol": "vless",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "${uuid}",
-                        "flow": "xtls-rprx-vision",
-                        "level": 0
+    {
+      "listen": "127.0.0.1",
+      "port": 10000,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "tag": "api"
+    },
+# VLESS XTLS
+    {
+      "listen": "::",
+      "port": 443,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "flow": "xtls-rprx-vision",
+            "id": "$uuid"
 #xray-vless-xtls
-                    }
-                ],
-                "decryption": "none",
-                "fallbacks": [
-                    {
-                        "alpn": "h2",
-                        "dest": 1318,
-                        "xver": 2
-                    },
-                {
-                        "dest": 4447,
-                        "xver": 2
-                    },
-                    {
-                        "path": "/xvless",
-                        "dest": 1311,
-                        "xver": 2
-                    },
-                    {
-                        "path": "/xvless-hup",
-                        "dest": 1312,
-                        "xver": 2
-                    }
-                ]
-            },
-            "streamSettings": {
-                "network": "tcp",
-                "security": "tls",
-                "tlsSettings": {
-                    "alpn": [
-                        "h2",
-                        "http/1.1"
-                    ],
-                    "certificates": [
-                        {
-                            "certificateFile": "/usr/local/etc/xray/xray.crt",
-                            "keyFile": "/usr/local/etc/xray/xray.key"
-                        }
-                    ]
-                }
+          }
+        ],
+        "decryption": "none",
+        "fallbacks": [
+          {
+            "alpn": "h2",
+            "dest": 4443,
+            "xver": 2
+          },
+          {
+            "dest": 8181,
+            "xver": 2
+          },
+          // Websocket
+          {
+            "path": "/xvless",
+            "dest": "@vless-ws",
+            "xver": 2
+          },
+          // HTTPupgrade
+          {
+            "path": "/xvless-hup",
+            "dest": "@vl-hup",
+            "xver": 2
+          }
+        ]
+      },
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "enabled": true
+      },
+      "streamSettings": {
+        "tlsSettings": {
+          "certificates": [
+            {
+              "ocspStapling": 3600,
+              "certificateFile": "/usr/local/etc/xray/fullchain.cer",
+              "keyFile": "/usr/local/etc/xray/private.key"
             }
-        }
-    ],
+          ],
+          "minVersion": "1.2",
+          "cipherSuites": "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256:TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384:TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384:TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256:TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+          "alpn": [
+            "h2",
+            "http/1.1"
+          ]
+        },
+        "network": "tcp",
+        "security": "tls"
+      },
+      "tag": "in-01"
+    }
+],
     "outbounds": [
    {
             "tag": "default",
@@ -176,112 +195,8 @@ cat> /usr/local/etc/xray/config.json << END
     ]
   }
 }
-
 END
-cat> /usr/local/etc/xray/vlessws.json << END
-{
-  "log": {
-    "access": "/var/log/xray/access.log",
-    "error": "/var/log/xray/error.log",
-    "loglevel": "info"
-       },
-    "inbounds": [
-        {
-            "port": 1311,
-            "listen": "127.0.0.1",
-            "protocol": "vless",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "${uuid}",
-                        "level": 0
-#xray-vless-tls
-                    }
-                ],
-                "decryption": "none"
-            },
-            "streamSettings": {
-                "network": "ws",
-                "security": "none",
-                "wsSettings": {
-                    "acceptProxyProtocol": true,
-                    "path": "/xvless"
-                }
-            }
-        }
-    ],
-    "outbounds": [
-   {
-            "tag": "default",
-            "protocol": "freedom"
-        },
-    {
-            "tag":"socks_out",
-            "protocol": "socks",
-            "settings": {
-                "servers": [
-                     {
-                        "address": "127.0.0.1",
-                        "port": 40000
-                    }
-                ]
-            }
-    }
-  ],
-  "routing": {
-    "rules": [
- {
-                "type": "field",
-                "outboundTag": "socks_out",
-                "domain": [
-#warp-domain
-"jinggo.com"
-                  ]
-     },
-     {
-                "type": "field",
-                "outboundTag": "default",
-                "network": "udp,tcp"
-    },
-    {
-                "type": "field",
-                "outboundTag": "blocked",
-                "domain": [
-                 "playstation.com"
-                 ]
-    },
-      {
-        "type": "field",
-        "ip": [
-          "0.0.0.0/8",
-          "10.0.0.0/8",
-          "100.64.0.0/10",
-          "169.254.0.0/16",
-          "172.16.0.0/12",
-          "192.0.0.0/24",
-          "192.0.2.0/24",
-          "192.168.0.0/16",
-          "198.18.0.0/15",
-          "198.51.100.0/24",
-          "203.0.113.0/24",
-          "::1/128",
-          "fc00::/7",
-          "fe80::/10"
-        ],
-        "outboundTag": "blocked"
-      },
-      {
-        "type": "field",
-        "outboundTag": "blocked",
-        "protocol": [
-          "bittorrent"
-        ]
-      }
-    ]
-  }
-}
 
-END
 cat> /usr/local/etc/xray/vlessgrpc.json << END
 {
   "log": {
@@ -291,7 +206,7 @@ cat> /usr/local/etc/xray/vlessgrpc.json << END
        },
     "inbounds": [
         {
-        "port": 1318,
+        "port": 4443,
         "listen": "127.0.0.1",
         "protocol": "vless",
         "settings": {
@@ -310,7 +225,7 @@ cat> /usr/local/etc/xray/vlessgrpc.json << END
                 }
             }
         }
-    ],
+],
     "outbounds": [
    {
             "tag": "default",
@@ -382,51 +297,46 @@ cat> /usr/local/etc/xray/vlessgrpc.json << END
   }
 }
 END
-cat> /usr/local/etc/xray/none.json << END
+
+cat> /usr/local/etc/xray/vlessws.json << END
 {
   "log": {
     "access": "/var/log/xray/access.log",
     "error": "/var/log/xray/error.log",
     "loglevel": "info"
-  },
-  "inbounds": [
+       },
+    "inbounds": [    
     {
-            "port": "80",
-            "protocol": "vless",
-            "settings": {
-            "clients": [
-                {
-                  "id": "${uuid}"
-#xray-vless-nontls
-                }
-            ],
-             "fallbacks": [
-                 {
-                        "dest": 4447,
-                        "xver": 2
-                 },
-                 {
-                        "path": "/xvless",
-                        "dest": "1311",
-                        "xver": 2
-                 },
-                 {
-                        "path": "/xvless-hup",
-                        "dest": "1312",
-                        "xver": 2
-                 }
-    ],
-            "decryption": "none"
-    },
-          "sniffing": {
-              "enabled": true,
-              "destOverride": [
-                 "http",
-                 "tls"
-             ]
+      "listen": "@vless-ws",
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "email":"general@vless-ws",
+            "id": "$uuid"
+#xray-vless-tls
           }
-       }
-    ],
+        ],
+        "decryption": "none"
+      },
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "enabled": true
+      },
+      "streamSettings": {
+        "wsSettings": {
+          "acceptProxyProtocol": true,
+          "path": "/xvless"
+        },
+        "network": "ws",
+        "security": "none"
+      },
+      "tag": "in-03"
+    }
+],    
     "outbounds": [
    {
             "tag": "default",
@@ -499,6 +409,7 @@ cat> /usr/local/etc/xray/none.json << END
 }
 
 END
+
 
 cat> /usr/local/etc/xray/vlesshup.json << END
 {
@@ -506,38 +417,168 @@ cat> /usr/local/etc/xray/vlesshup.json << END
     "access": "/var/log/xray/access.log",
     "error": "/var/log/xray/error.log",
     "loglevel": "info"
-  },
-  "inbounds": [
+       },
+    "inbounds": [   
     {
-            "port": 1312,
-            "listen": "127.0.0.1",
-            "protocol": "vless",
-            "settings": {
-            "clients": [
-                {
-                  "id": "${uuid}"
-#xray-vless-hup
-                }
-            ],
-            "decryption": "none"
-         },
-         "streamSettings": {
-           "httpupgradeSettings": {
+      "listen": "@vl-hup",
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "email":"general@vless-ws",
+            "id": "$uuid"
+#vless
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "httpupgradeSettings": {
           "acceptProxyProtocol": true,
           "path": "/xvless-hup"
         },
         "network": "httpupgrade",
         "security": "none"
       },
-          "sniffing": {
-              "enabled": true,
-              "destOverride": [
-                 "http",
-                 "tls"
-             ]
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "enabled": true
+      },
+      "tag": "in-08"
+    }
+],
+    "outbounds": [
+   {
+            "tag": "default",
+            "protocol": "freedom"
+        },
+    {
+            "tag":"socks_out",
+            "protocol": "socks",
+            "settings": {
+                "servers": [
+                     {
+                        "address": "127.0.0.1",
+                        "port": 40000
+                    }
+                ]
+            }
+    }
+  ],
+  "routing": {
+    "rules": [
+ {
+                "type": "field",
+                "outboundTag": "socks_out",
+                "domain": [
+#warp-domain
+"jinggo.com"
+                  ]
+     },
+     {
+                "type": "field",
+                "outboundTag": "default",
+                "network": "udp,tcp"
+    },
+    {
+                "type": "field",
+                "outboundTag": "blocked",
+                "domain": [
+                 "playstation.com"
+                 ]
+    },
+      {
+        "type": "field",
+        "ip": [
+          "0.0.0.0/8",
+          "10.0.0.0/8",
+          "100.64.0.0/10",
+          "169.254.0.0/16",
+          "172.16.0.0/12",
+          "192.0.0.0/24",
+          "192.0.2.0/24",
+          "192.168.0.0/16",
+          "198.18.0.0/15",
+          "198.51.100.0/24",
+          "203.0.113.0/24",
+          "::1/128",
+          "fc00::/7",
+          "fe80::/10"
+        ],
+        "outboundTag": "blocked"
+      },
+      {
+        "type": "field",
+        "outboundTag": "blocked",
+        "protocol": [
+          "bittorrent"
+        ]
+      }
+    ]
+  }
+}
+
+END
+
+cat> /usr/local/etc/xray/none.json << END
+{
+  "log": {
+    "access": "/var/log/xray/access.log",
+    "error": "/var/log/xray/error.log",
+    "loglevel": "info"
+       },
+    "inbounds": [   
+    {
+      "port": 80,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "$uuid"
+#universal
           }
-       }
-    ],
+        ],
+        "fallbacks": [
+          {
+            "dest": 8181,
+            "xver": 2
+          },
+          // Websocket
+          {
+            "path": "/xvless",
+            "dest": "@vless-ws",
+            "xver": 2
+          },
+          {
+            "dest": 2000,
+            "xver": 2
+          },
+          {
+            "dest": 2100,
+            "xver": 2
+          },
+          // HTTPupgrade
+          {
+            "path": "/xvless-hup",
+            "dest": "@vl-hup",
+            "xver": 2
+          }
+        ],
+        "decryption": "none"
+      },
+      "sniffing": {
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "enabled": true
+      },
+      "tag": "in-18"
+    }
+],
     "outbounds": [
    {
             "tag": "default",

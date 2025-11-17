@@ -70,12 +70,21 @@ cat> /usr/local/etc/xray/config.json << END
                     {
                         "alpn": "h2",
                         "dest": 1318,
-                        "xver": 0
+                        "xver": 2
+                    },
+                {
+                        "dest": 4447,
+                        "xver": 2
                     },
                     {
                         "path": "/xvless",
+                        "dest": 1311,
+                        "xver": 2
+                    },
+                    {
+                        "path": "/xvless-hup",
                         "dest": 1312,
-                        "xver": 1
+                        "xver": 2
                     }
                 ]
             },
@@ -167,6 +176,7 @@ cat> /usr/local/etc/xray/config.json << END
     ]
   }
 }
+
 END
 cat> /usr/local/etc/xray/vlessws.json << END
 {
@@ -177,7 +187,7 @@ cat> /usr/local/etc/xray/vlessws.json << END
        },
     "inbounds": [
         {
-            "port": 1312,
+            "port": 1311,
             "listen": "127.0.0.1",
             "protocol": "vless",
             "settings": {
@@ -270,6 +280,7 @@ cat> /usr/local/etc/xray/vlessws.json << END
     ]
   }
 }
+
 END
 cat> /usr/local/etc/xray/vlessgrpc.json << END
 {
@@ -390,24 +401,23 @@ cat> /usr/local/etc/xray/none.json << END
                 }
             ],
              "fallbacks": [
-          {
-             "path": "/xvless-hup",
-             "dest": "1319",
-             "xver": 2
-        }
+                 {
+                        "dest": 4447,
+                        "xver": 2
+                 },
+                 {
+                        "path": "/xvless",
+                        "dest": "1311",
+                        "xver": 2
+                 },
+                 {
+                        "path": "/xvless-hup",
+                        "dest": "1312",
+                        "xver": 2
+                 }
+    ],
             "decryption": "none"
-         },
-         "streamSettings": {
-            "network": "ws",
-            "security": "none",
-            "wsSettings": {
-            "path": "/xvlessntls",
-            "headers": {
-                "Host": ""
-               }
-            },
-            "quicSettings": {}
-          },
+    },
           "sniffing": {
               "enabled": true,
               "destOverride": [
@@ -487,6 +497,7 @@ cat> /usr/local/etc/xray/none.json << END
     ]
   }
 }
+
 END
 
 cat> /usr/local/etc/xray/vlesshup.json << END
@@ -498,7 +509,7 @@ cat> /usr/local/etc/xray/vlesshup.json << END
   },
   "inbounds": [
     {
-            "port": 1319,
+            "port": 1312,
             "listen": "127.0.0.1",
             "protocol": "vless",
             "settings": {
@@ -597,6 +608,7 @@ cat> /usr/local/etc/xray/vlesshup.json << END
     ]
   }
 }
+
 END
 
 # starting xray vmess ws tls core on sytem startup

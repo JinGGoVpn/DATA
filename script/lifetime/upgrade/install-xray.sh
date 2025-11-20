@@ -522,7 +522,8 @@ cat> /usr/local/etc/xray/vlesshup.json << END
             "settings": {
             "clients": [
                 {
-                  "id": "${uuid}"
+                  "id": "${uuid}",
+                  "email": ""
 #xray-vless-hup
                 }
             ],

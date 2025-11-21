@@ -23,7 +23,7 @@ date
 latest_version="$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | grep tag_name | sed -E 's/.*"v(.*)".*/\1/' | head -n 1)"
 
 # / / Installation Xray Core
-xraycore_link="${websc}/script/xray/core/v25.10.15.3/xray.linux.zip"
+xraycore_link="${websc}/script/xray/core/25.10.15/xray.linux.zip"
 
 # / / Make Main Directory
 mkdir -p /usr/bin/xray
@@ -52,102 +52,159 @@ cat> /usr/local/etc/xray/config.json << END
     "error": "/var/log/xray/error.log",
     "loglevel": "info"
        },
-  "inbounds": [
-    {
-      "tag": "vless-xtls",
-      "port": 443,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-          {
-            "id": "${uuid}",
+    "inbounds": [
+        {
+            "port": 443,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "${uuid}",
+                        "flow": "xtls-rprx-vision",
+                        "level": 0
 #xray-vless-xtls
-            "flow": "xtls-rprx-vision"
-          }
-        ],
-        "decryption": "none",
-        "fallbacks": [
-          {
-            "path": "/vless-tls",
-            "dest": 3030,
-            "xver": 1
-          },
-          {
-            "dest": 80,
-            "xver": 1  
-        ]
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "xtls",
-        "xtlsSettings": {
-          "alpn": ["http/1.1", "h2"],
-          "certificates": [
-            {
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "alpn": "h2",
+                        "dest": 1318,
+                        "xver": 2
+                    },
+                    {
+                        "dest": 4447,
+                        "xver": 2
+                    },
+                    {
+                        "path": "/xvless",
+                        "dest": "@vlessws",
+                        "xver": 2
+                    },
+                    {
+                        "path": "/xvless-hup",
+                        "dest": "@vless-http",
+                        "xver": 2
+                    }
+                            ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "alpn": [
+                        "h2",
+                        "http/1.1"
+                    ],
+                    "certificates": [
+                        {
                             "certificateFile": "/usr/local/etc/xray/xray.crt",
                             "keyFile": "/usr/local/etc/xray/xray.key"
+                        }
+                    ]
+                }
             }
+        },
+       {
+        "port": 1318,
+        "listen": "127.0.0.1",
+        "protocol": "vless",
+        "settings": {
+         "decryption":"none",
+           "clients": [
+             {
+               "id": "${uuid}"
+#xray-vless-grpc
+             }
           ]
-        }
-      }
-    },
-
-    /* -----------------------------
-       80 → Non-TLS VLESS with WS + HTTPUpgrade fallback
-    ----------------------------- */
+       },
+          "streamSettings":{
+             "network": "grpc",
+             "grpcSettings": {
+                "serviceName": "vlgrpc"
+                }
+            }
+        },
+       {
+            "listen": "@vlessws",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "${uuid}",
+                        "level": 0
+#xray-vless-tls
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                    "acceptProxyProtocol": true,
+                    "path": "/xvless"
+                }
+            }
+        },
     {
-      "tag": "vless-plain-80",
-      "port": 80,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-           "id": "${uuid}"
-#non-tls
-        ],
-        "decryption": "none",
-        "fallbacks": [
-          {
-            "path": "/vless-ntls",
-            "dest": 3031,
-            "xver": 2
-          },
-          {
-            "path": "/vless-hup",
-            "dest": 3032,
-            "xver": 2
+            "port": "80",
+            "protocol": "vless",
+            "settings": {
+            "clients": [
+                {
+                  "id": "${uuid}"
+#xray-nontls
+                }
+            ],
+             "fallbacks": [
+                 {
+                        "path": "/xvlessntls",
+                        "dest": "@vlessws-ntls",
+                        "xver": 2
+                 },
+                 {
+                        "path": "/xvless-hup",
+                        "dest": "@vless-http",
+                        "xver": 2
+                 },
+                 {
+                        "dest": "@vlessws-ntls",
+                        "xver": 2
+                 }
+                         ],
+            "decryption": "none"
+    },
+          "sniffing": {
+              "enabled": true,
+              "destOverride": [
+                 "http",
+                 "tls"
+             ]
           }
-        ]
-      },
-      "streamSettings": {
-        "network": "tcp",
-        "security": "none"
-      }
-    },
-
-    /* -----------------------------
-       3031 → WebSocket inbound for fallback
-    ----------------------------- */
+       },
     {
-      "tag": "vless-ntls",
-      "port": 3031,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-           "id": "${uuid}"
+            "listen": "@vlessws-ntls",
+            "protocol": "vless",
+            "settings": {
+            "clients": [
+                {
+                  "id": "${uuid}"
 #xray-vless-nontls
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "ws",
-        "security": "none",
-        "wsSettings": {
-          "path": "/vless-ntls",
-          "headers": {
+                }
+            ],
+            "decryption": "none"
+         },
+         "streamSettings": {
+            "network": "ws",
+            "security": "none",
+            "wsSettings": {
+            "path": "/xvlessntls",
+            "headers": {
                 "Host": ""
                }
-        },
-        "quicSettings": {}
+            },
+            "quicSettings": {}
           },
           "sniffing": {
               "enabled": true,
@@ -156,63 +213,38 @@ cat> /usr/local/etc/xray/config.json << END
                  "tls"
              ]
           }
-    },
-
-    /* -----------------------------
-       3032 → HTTPUpgrade inbound for fallback
-    ----------------------------- */
+       },
     {
-      "tag": "vless-hup",
-      "port": 3032,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-           "id": "${uuid}"
+            "listen": "@vless-http",
+            "protocol": "vless",
+            "settings": {
+            "clients": [
+                {
+                  "id": "${uuid}"
 #xray-vless-hup
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
+                }
+            ],
+            "decryption": "none"
+         },
+         "streamSettings": {
+           "httpupgradeSettings": {
+          "acceptProxyProtocol": true,
+          "path": "/xvless-hup"
+        },
         "network": "httpupgrade",
-        "security": "none",
-        "httpupgradeSettings": {
-          "path": "/vless-hup"
-        }
+        "security": "none"
       },
-      "sniffing": {
+          "sniffing": {
               "enabled": true,
               "destOverride": [
                  "http",
-                 "tls"
+                 "tls",
+                 "quic"
              ]
           }
-    },
-
-    /* -----------------------------
-       8080 → WS inbound for fallback from 443
-    ----------------------------- */
-    {
-      "tag": "vless-tls-in",
-      "port": 3030,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-           "id": "${uuid}"
-#xray-vless-tls
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "ws",
-        "security": "none",
-        "wsSettings": {
-          "path": "/vless-tls"
-        }
-      }
-    }
-  ],
-
-  "outbounds": [
+       }
+],
+    "outbounds": [
    {
             "tag": "default",
             "protocol": "freedom"
@@ -280,9 +312,11 @@ cat> /usr/local/etc/xray/config.json << END
         ]
       }
     ]
+  }
 }
 
 END
+
 
 # starting xray vmess ws tls core on sytem startup
 cat> /etc/systemd/system/xray.service << END

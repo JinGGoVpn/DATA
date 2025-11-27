@@ -16,27 +16,27 @@ status="$(systemctl show xray --no-page)"
 status_text=$(echo "${status}" | grep 'ActiveState=' | cut -f2 -d=)                     
 if [ "${status_text}" == "active" ]                                                     
 then                                                                                    
-echo -e " XRAY               : XRAY Service is "$green"ON"$NC""              
+echo -e " XRAY               : XRAY >> "$green"ON"$NC""              
 else                                                                                       
-echo -e " XRAY               : XRAY Service is "$red"OFF"$NC""    
+echo -e " XRAY               : XRAY >> "$red"OFF"$NC""    
 fi              
 
 status="$(systemctl show xray --no-page)"                                 
 status_text=$(echo "${status}" | grep 'ActiveState=' | cut -f2 -d=)                     
 if [ "${status_text}" == "active" ]                                                     
 then                                                                                    
-echo -e " XRAY NONE TLS      : XRAY NONE TLS Service is "$green"ON"$NC""              
+echo -e " XRAY NONE TLS      : XRAY NONE TLS >> "$green"ON"$NC""              
 else                                                                                    
-echo -e " XRAY NONE TLS      : XRAY NONE TLS Service is "$red"OFF"$NC""    
+echo -e " XRAY NONE TLS      : XRAY NONE TLS >> "$red"OFF"$NC""    
 fi 
 
 status="$(systemctl show ws-http.service --no-page)"                                 
 status_text=$(echo "${status}" | grep 'ActiveState=' | cut -f2 -d=)                     
 if [ "${status_text}" == "active" ]                                                     
 then                                                                                    
-echo -e " SSH WS HTTP        : SSH WS HTTP  Service is "$green"ON"$NC""              
+echo -e " SSH WS HTTP        : SSH WS HTTP  >> "$green"ON"$NC""              
 else                                                                                    
-echo -e " SSH WS HTTP        : SSH WS HTTP  Service is "$red"OFF"$NC""    
+echo -e " SSH WS HTTP        : SSH WS HTTP  >> "$red"OFF"$NC""    
 fi 
 
 

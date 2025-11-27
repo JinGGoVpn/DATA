@@ -21,7 +21,7 @@ else
 echo -e " XRAY               : XRAY >> "$red"OFF"$NC""    
 fi              
 
-status="$(systemctl show xray --no-page)"                                 
+status="$(systemctl show xray@none --no-page)"                                 
 status_text=$(echo "${status}" | grep 'ActiveState=' | cut -f2 -d=)                     
 if [ "${status_text}" == "active" ]                                                     
 then                                                                                    

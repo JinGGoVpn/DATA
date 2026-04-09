@@ -94,8 +94,10 @@ maxisfrez="vless://${uuid}@cdn.opensignal.com:8080?mode=auto&path=$path/xvless-x
 #umobile1="vless://${uuid}@$MYIP:$none?path=/xvlessntls&encryption=none&type=ws&host=www.pubgmobile.com#${user}-umobile-funz-ntls"
 #mobile2="vless://${uuid}@www.pubgmobile.com.${domain}:$tls?path=/xvless&security=tls&encryption=none&type=ws&sni=www.pubgmobile.com#${user}-umobile-funz-tls"
 #umobile3="vless://${uuid}@104.18.8.53:$none?path=/xvlessntls&encryption=none&type=ws&host=$dom#${user}-umobile-new-ntls"
-umopayload="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY / HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=ws&host=strx-payload://u.com.my/#${user}-umo-hp"
-umopayload2="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY /xvless-hup HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=httpupgrade&host=u.com.my#${user}-umo-xlite"
+#umopayload="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY / HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=ws&host=strx-payload://u.com.my/#${user}-umo-hp"
+umopayload="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: wap.u.com.my[crlf][crlf][split]STRX / HTTP/1.1[crlf]Host: [host][crlf]Upgrade: websocket[crlf]Sec-WebSocket-Key: K4vEMLAxh27PNePuLDwBAQ==[crlf]Connection: Upgrade[crlf]Sec-WebSocket-Version: 13[crlf][crlf]&encryption=none&type=ws&host=strx-payload://${domain}/#${user}-umo-hp"
+#umopayload2="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY /xvless-hup HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=httpupgrade&host=u.com.my#${user}-umo-xlite"
+umopayload2="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: u.com.my[crlf][crlf][split]CF-RAY /xvless-hup HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=httpupgrade&host=${domain}#${user}-umo-xlite"
 
 
 yes="vless://${uuid}@104.17.147.22:$none?path=/vlessntls&encryption=none&type=ws&host=$dom#${user}-yes-router"
@@ -493,8 +495,10 @@ maxisfrez="vless://${uuid}@cdn.opensignal.com:8080?mode=auto&path=$path/xvless-x
 #umobile1="vless://${uuid}@$MYIP:$none?path=/xvlessntls&encryption=none&type=ws&host=www.pubgmobile.com#${user}-umobile-funz-ntls"
 #mobile2="vless://${uuid}@www.pubgmobile.com.${domain}:$tls?path=/xvless&security=tls&encryption=none&type=ws&sni=www.pubgmobile.com#${user}-umobile-funz-tls"
 #umobile3="vless://${uuid}@104.18.8.53:$none?path=/xvlessntls&encryption=none&type=ws&host=$dom#${user}-umobile-new-ntls"
-umopayload="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY / HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=ws&host=strx-payload://u.com.my/#${user}-umo-hp"
-umopayload2="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY /xvless-hup HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=httpupgrade&host=u.com.my#${user}-umo-xlite"
+#umopayload="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY / HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=ws&host=strx-payload://u.com.my/#${user}-umo-hp"
+umopayload="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: wap.u.com.my[crlf][crlf][split]STRX / HTTP/1.1[crlf]Host: [host][crlf]Upgrade: websocket[crlf]Sec-WebSocket-Key: K4vEMLAxh27PNePuLDwBAQ==[crlf]Connection: Upgrade[crlf]Sec-WebSocket-Version: 13[crlf][crlf]&encryption=none&type=ws&host=strx-payload://${domain}/#${user}-umo-hp"
+#umopayload2="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: [host][crlf][crlf][split]CF-RAY /xvless-hup HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=httpupgrade&host=u.com.my#${user}-umo-xlite"
+umopayload2="vless://${uuid}@cdn.opensignal.com:$none?path=GET /cdn-cgi/trace HTTP/1.1[crlf]Host: u.com.my[crlf][crlf][split]CF-RAY /xvless-hup HTTP/1.1[crlf]Host: ${domain}[crlf]Upgrade: websocket[crlf][crlf]&encryption=none&type=httpupgrade&host=${domain}#${user}-umo-xlite"
 
 
 yes="vless://${uuid}@104.17.147.22:$none?path=/vlessntls&encryption=none&type=ws&host=$dom#${user}-yes-router"

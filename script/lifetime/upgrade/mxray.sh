@@ -615,6 +615,7 @@ echo -e "3. UMOBILE"
 echo -e "4. YES"
 echo -e "5. YODOO"
 echo -e "6. UNIFI"
+echo -e "7. SEMUA"
 echo -e ""
 
 read -p "Pilih : " pilih
